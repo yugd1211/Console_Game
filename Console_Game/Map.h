@@ -26,9 +26,9 @@ public:
 	void DisplayMap() const;
 	MAP_ELEMENT CheckPosition(Position &pos);
 	void Swap(Position a, Position b);
+	vector<vector<int>> board;
 
 private:
-	vector<vector<int>> board;
 	int size;
 	Scene* scene;
 };

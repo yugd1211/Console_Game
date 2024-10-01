@@ -18,6 +18,28 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Enum.h" />
+    <ClInclude Include="GameManager.h" />
+    <ClInclude Include="InputManager.h" />
+    <ClInclude Include="Map.h" />
+    <ClInclude Include="MapViewer.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="Position.h" />
+    <ClInclude Include="Scene.h" />
+    <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="Singleton.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="GameManager.cpp" />
+    <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Map.cpp" />
+    <ClCompile Include="MapViewer.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="SceneManager.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -126,26 +148,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClInclude Include="..\Enum.h" />
-    <ClInclude Include="..\GameManager.h" />
-    <ClInclude Include="..\InputManager.h" />
-    <ClInclude Include="..\Map.h" />
-    <ClInclude Include="..\Player.h" />
-    <ClInclude Include="..\Position.h" />
-    <ClInclude Include="..\Scene.h" />
-    <ClInclude Include="..\SceneManager.h" />
-    <ClInclude Include="..\Singleton.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\GameManager.cpp" />
-    <ClCompile Include="..\InputManager.cpp" />
-    <ClCompile Include="..\main.cpp" />
-    <ClCompile Include="..\Map.cpp" />
-    <ClCompile Include="..\Player.cpp" />
-    <ClCompile Include="..\Scene.cpp" />
-    <ClCompile Include="..\SceneManager.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

@@ -6,6 +6,7 @@
 #include "SceneManager.h"
 #include "Enum.h"
 #include "GameManager.h"
+#include "MapViewer.h"
 #include <iomanip> 
 #define _CRTDBG_MAP_ALLOC
 #include <stdlib.h>
@@ -14,32 +15,12 @@
 #include <windows.h>
 
 #define MAP_SIZE 72
-#define MOVE_STEP_SIZE 3
-#define PATH_SIZE MOVE_STEP_SIZE * 2
+#define FIXEL_SIZE 3
 const static string Void = "  ";
 const static string Wall = "■";
 
 int g_player_x;
 int g_player_y;
-
-int GetPlayerPoston(const vector<vector<int>>& playerMap)
-{
-	for (int i = 0; i < playerMap.size(); i++)
-	{
-		if (playerMap[i][g_player_y] == 2)
-			return i;
-	}
-	return -1;
-}
-
-void DisplayBoard(vector<vector<string>>& str)
-{
-	for (auto vec : str)
-	{
-		for (auto iter : vec)
-			cout << iter;
-	}
-}
 
 void SetWallInBoard(vector<vector<string>>& str)
 {
@@ -61,6 +42,7 @@ int GetNearestPlayerForward(const vector<vector<int>>& playerMap)
 	}
 	return 0;
 }
+
 void SetLeftEdgeWall(vector<vector<string>>& board, int in_line, int num)
 {
 	int out_line = in_line + num;
@@ -90,7 +72,7 @@ void SetLeftHorizontalWall(vector<vector<string>>& board, const vector<vector<in
 {
 	int playerFor = GetNearestPlayerForward(playerMap);
 
-	if ((g_player_x - playerFor) * MOVE_STEP_SIZE < in_line)
+	if ((g_player_x - playerFor) * FIXEL_SIZE < in_line)
 		return;
 	if (in_line + num > MAP_SIZE / 2)
 	{
@@ -111,7 +93,7 @@ void SetRightHorizontalWall(vector<vector<string>>& board, const vector<vector<i
 {
 	int playerFor = GetNearestPlayerForward(playerMap);
 
-	if (MAP_SIZE - (g_player_x - playerFor) * MOVE_STEP_SIZE > in_line)
+	if (MAP_SIZE - (g_player_x - playerFor) * FIXEL_SIZE > in_line)
 		return;
 	if (in_line - num < MAP_SIZE / 2)
 	{
@@ -131,17 +113,17 @@ void SetLeftVerticalWall(vector<vector<string>>& board, const vector<vector<int>
 	int playerFor = GetNearestPlayerForward(playerMap);
 	for (int i = in_line; i < MAP_SIZE - in_line; i++)
 	{
-		if (in_line - 1 > ((g_player_x - playerFor) * MOVE_STEP_SIZE))
+		if (in_line - 1 > ((g_player_x - playerFor) * FIXEL_SIZE))
 			continue;
 		board[i][in_line] = Void;
 	}
 
 	int out_line = in_line + num;
-	if ((g_player_x - playerFor) * MOVE_STEP_SIZE <= in_line + num)
+	if ((g_player_x - playerFor) * FIXEL_SIZE <= in_line + num)
 		return;
 	for (int i = out_line; i < MAP_SIZE - out_line; i++)
 	{
-		if (in_line - 1 > ((g_player_x - playerFor) * MOVE_STEP_SIZE))
+		if (in_line - 1 > ((g_player_x - playerFor) * FIXEL_SIZE))
 			continue;
 		board[i][out_line] = Void;
 	}
@@ -154,7 +136,7 @@ void SetRightVerticalWall(vector<vector<string>>& board, const vector<vector<int
 	//오른쪽에서 코너까지의 벽
 	for (int i = MAP_SIZE - in_line - 1; i <= in_line; i++)
 	{
-		if (in_line < MAP_SIZE - ((g_player_x - playerFor) * MOVE_STEP_SIZE))
+		if (in_line < MAP_SIZE - ((g_player_x - playerFor) * FIXEL_SIZE))
 			continue;
 		//if (i >= 0 && i <= MAP_SIZE && in_line >= MAP_SIZE / 2 - 2)
 		board[i][in_line] = Void;
@@ -163,7 +145,7 @@ void SetRightVerticalWall(vector<vector<string>>& board, const vector<vector<int
 	int out_line = in_line - num;
 	for (int i = MAP_SIZE  - out_line - 1; i <= out_line; i++)
 	{
-		if (out_line < MAP_SIZE - ((g_player_x - playerFor) * MOVE_STEP_SIZE))
+		if (out_line < MAP_SIZE - ((g_player_x - playerFor) * FIXEL_SIZE))
 			continue;
 		//if (i >= 0 && i < MAP_SIZE && out_line >= MAP_SIZE / 2 - 2)
 		board[i][out_line] = Void;
@@ -177,7 +159,7 @@ void SetStraight(vector<vector<string>>& displayBoard, vector<vector<int>> playe
 	SetWallInBoard(displayBoard);
 	// 전방 벽
 	int forward = GetNearestPlayerForward(playerMap);
-	int in_line = (g_player_x - forward) * MOVE_STEP_SIZE;
+	int in_line = (g_player_x - forward) * FIXEL_SIZE;
 	for (int i = in_line; i < MAP_SIZE - in_line; i++)
 	{
 		// 상
@@ -214,10 +196,10 @@ void SetStraight(vector<vector<string>>& displayBoard, vector<vector<int>> playe
 		//벽이 있는 특정 부분만 채우기
 		if (playerMap[i][g_player_y - 1] == 1)
 		{
-			for (int j = 0; j < MOVE_STEP_SIZE; j++)
+			for (int j = 0; j < FIXEL_SIZE; j++)
 			{
-				displayBoard[MAP_SIZE - (((g_player_x - i) * MOVE_STEP_SIZE) + j) - 1][((g_player_x - i) * MOVE_STEP_SIZE) + j] = Void;
-				displayBoard[((g_player_x - i) * MOVE_STEP_SIZE) + j][((g_player_x - i) * MOVE_STEP_SIZE) + j] = Void;
+				displayBoard[MAP_SIZE - (((g_player_x - i) * FIXEL_SIZE) + j) - 1][((g_player_x - i) * FIXEL_SIZE) + j] = Void;
+				displayBoard[((g_player_x - i) * FIXEL_SIZE) + j][((g_player_x - i) * FIXEL_SIZE) + j] = Void;
 			}
 		}
 	}
@@ -228,10 +210,10 @@ void SetStraight(vector<vector<string>>& displayBoard, vector<vector<int>> playe
 	{
 		if (playerMap[i][g_player_y + 1] == 1)
 		{
-			for (int j = 0; j < MOVE_STEP_SIZE; j++)
+			for (int j = 0; j < FIXEL_SIZE; j++)
 			{
-				displayBoard[((g_player_x - i) * MOVE_STEP_SIZE) + j][MAP_SIZE - (((g_player_x - i) * MOVE_STEP_SIZE) + j) - 1] = Void;
-				displayBoard[MAP_SIZE - (((g_player_x - i) * MOVE_STEP_SIZE) + j) - 1][MAP_SIZE - (((g_player_x - i) * MOVE_STEP_SIZE) + j) - 1] = Void;
+				displayBoard[((g_player_x - i) * FIXEL_SIZE) + j][MAP_SIZE - (((g_player_x - i) * FIXEL_SIZE) + j) - 1] = Void;
+				displayBoard[MAP_SIZE - (((g_player_x - i) * FIXEL_SIZE) + j) - 1][MAP_SIZE - (((g_player_x - i) * FIXEL_SIZE) + j) - 1] = Void;
 			}
 		}
 	}
@@ -263,9 +245,9 @@ void SetOutLine(vector<vector<string>>& displayBoard, const vector<vector<int>>&
 		if (playerMap[i][g_player_y - 1] == 0)
 		{
 			int leftPathCnt = GetZeroSize(playerMap, i, -1);
-			SetLeftEdgeWall(displayBoard, (g_player_x - i) * MOVE_STEP_SIZE, MOVE_STEP_SIZE * leftPathCnt);
-			SetLeftVerticalWall(displayBoard, playerMap, (g_player_x - i) * MOVE_STEP_SIZE, MOVE_STEP_SIZE * leftPathCnt);
-			SetLeftHorizontalWall(displayBoard, playerMap, (g_player_x - i) * MOVE_STEP_SIZE, MOVE_STEP_SIZE * leftPathCnt);
+			SetLeftEdgeWall(displayBoard, (g_player_x - i) * FIXEL_SIZE, FIXEL_SIZE * leftPathCnt);
+			SetLeftVerticalWall(displayBoard, playerMap, (g_player_x - i) * FIXEL_SIZE, FIXEL_SIZE * leftPathCnt);
+			SetLeftHorizontalWall(displayBoard, playerMap, (g_player_x - i) * FIXEL_SIZE, FIXEL_SIZE * leftPathCnt);
 
 			i -= leftPathCnt;
 		}
@@ -279,30 +261,12 @@ void SetOutLine(vector<vector<string>>& displayBoard, const vector<vector<int>>&
 		{
 
 			int rightPathCnt = GetZeroSize(playerMap, i, 1);
-			SetRightEdgeWall(displayBoard, (MAP_SIZE - 1) - (g_player_x - i) * MOVE_STEP_SIZE, MOVE_STEP_SIZE * rightPathCnt);
-			SetRightVerticalWall(displayBoard, playerMap, (MAP_SIZE - 1) - (g_player_x - i) * MOVE_STEP_SIZE, MOVE_STEP_SIZE * rightPathCnt);
-			SetRightHorizontalWall(displayBoard, playerMap, (MAP_SIZE - 1) - (g_player_x - i) * MOVE_STEP_SIZE, MOVE_STEP_SIZE * rightPathCnt);
+			SetRightEdgeWall(displayBoard, (MAP_SIZE - 1) - (g_player_x - i) * FIXEL_SIZE, FIXEL_SIZE * rightPathCnt);
+			SetRightVerticalWall(displayBoard, playerMap, (MAP_SIZE - 1) - (g_player_x - i) * FIXEL_SIZE, FIXEL_SIZE * rightPathCnt);
+			SetRightHorizontalWall(displayBoard, playerMap, (MAP_SIZE - 1) - (g_player_x - i) * FIXEL_SIZE, FIXEL_SIZE * rightPathCnt);
 
 			i -= rightPathCnt;
 		}
-	}
-}
-
-
-void DisplayMap(vector<vector<int>> map)
-{
-	for (auto nxt : map)
-	{
-		for (auto nxt1 : nxt)
-		{
-			if (nxt1 == 1)
-				cout << "■";
-			else if (nxt1 == 2)
-				cout << "▲";
-			else if (nxt1 == 0)
-				cout << "  ";
-		}
-		cout << "\n";
 	}
 }
 
@@ -393,94 +357,98 @@ void ChangeRightDirection(vector<vector<int>>& map)
 int main()
 {
 	srand(time(NULL));
-	vector<vector<int>> map = {
-		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-		{1, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-		{1, 0, 1, 0, 1, 0, 1, 1, 0, 1},
-		{1, 0, 1, 0, 1, 0, 1, 1, 0, 1},
-		{1, 0, 1, 0, 1, 0, 1, 1, 0, 1},
-		{1, 0, 1, 0, 1, 0, 1, 1, 0, 1},
-		{1, 0, 1, 0, 1, 0, 1, 1, 0, 1},
-		{1, 0, 1, 0, 0, 0, 1, 1, 0, 1},
-		{1, 0, 1, 0, 0, 0, 1, 1, 0, 1},
-		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-	};
-	//vector<vector<int>> map = {
+	//vector<vector<int>> playerMap = {
 	//	{1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
 	//	{1, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-	//	{1, 0, 1, 1, 1, 1, 1, 1, 1, 1},
-	//	{1, 0, 1, 1, 1, 1, 1, 1, 1, 1},
-	//	{1, 0, 1, 1, 1, 1, 1, 1, 1, 1},
-	//	{1, 0, 1, 1, 1, 1, 1, 1, 1, 1},
-	//	{1, 0, 1, 1, 1, 1, 1, 1, 1, 1},
-	//	{1, 0, 1, 1, 1, 1, 1, 1, 1, 1},
-	//	{1, 0, 1, 1, 1, 1, 1, 1, 1, 1},
+	//	{1, 0, 1, 0, 1, 0, 1, 1, 0, 1},
+	//	{1, 0, 1, 0, 1, 0, 1, 1, 0, 1},
+	//	{1, 0, 1, 0, 1, 0, 1, 1, 0, 1},
+	//	{1, 0, 1, 0, 1, 0, 1, 1, 0, 1},
+	//	{1, 0, 1, 0, 1, 0, 1, 1, 0, 1},
+	//	{1, 0, 1, 0, 0, 0, 1, 1, 0, 1},
+	//	{1, 0, 1, 0, 0, 0, 1, 1, 0, 1},
 	//	{1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
 	//};
-	//vector<vector<int>> map;
-	//InitMap(map, 50);
+	vector<vector<int>> playerMap = {
+		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+		{1, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+		{1, 0, 0, 1, 1, 1, 1, 1, 1, 1},
+		{1, 0, 0, 1, 1, 1, 1, 1, 1, 1},
+		{1, 0, 0, 1, 1, 1, 1, 1, 1, 1},
+		{1, 0, 0, 1, 1, 1, 1, 1, 1, 1},
+		{1, 0, 0, 1, 1, 1, 1, 1, 1, 1},
+		{1, 0, 0, 1, 1, 1, 1, 1, 1, 1},
+		{1, 0, 0, 1, 1, 1, 1, 1, 1, 1},
+		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+	};
+	//vector<vector<int>> playerMap;
+	//InitMap(playerMap, 50);
 	vector<vector<string>> displayMap(MAP_SIZE);
 	InitDisplayMap(displayMap);
 	g_player_x = 1;
 	g_player_y = 1;
-	map[g_player_x][g_player_y] = 2;
-	DisplayMap(map);
-	SetDisplayMap(displayMap, map);
-	DisplayBoard(displayMap);
+	playerMap[g_player_x][g_player_y] = 2;
+	MapViewer mapViewer(g_player_x, g_player_y);
+	mapViewer.DisplayMap(playerMap);
+
+	SetDisplayMap(displayMap, playerMap);
+
+	mapViewer.SetRenderedMap(displayMap);
+	mapViewer.Rendering();
 	while (1)
 	{
 		Sleep(30);
-		cout << g_player_x << endl;
 		char c = _getch();
-		if (c == 'q')
+		
+		if (c == 'q' || c == 'Q')
 		{
-			ChangeLeftDirection(map);
+			ChangeLeftDirection(playerMap);
 		}
-		if (c == 'e')
+		if (c == 'e' || c == 'E')
 		{
-			ChangeRightDirection(map);
+			ChangeRightDirection(playerMap);
 		}
-		if (c == 'w')
+		if (c == 'w' || c == 'W')
 		{
-			if (map[g_player_x - 1][g_player_y] != 1 && g_player_x > 0)
+			if (playerMap[g_player_x - 1][g_player_y] != 1 && g_player_x > 0)
 			{
-				map[g_player_x--][g_player_y] = 0;
-				map[g_player_x][g_player_y] = 2;
+				playerMap[g_player_x--][g_player_y] = 0;
+				playerMap[g_player_x][g_player_y] = 2;
 			}
 
 		}
-		if (c == 's')
+		if (c == 's' || c == 'S')
 		{
-			if (map[g_player_x + 1][g_player_y] != 1)
+			if (playerMap[g_player_x + 1][g_player_y] != 1)
 			{
-				map[g_player_x++][g_player_y] = 0;
-				map[g_player_x][g_player_y] = 2;
+				playerMap[g_player_x++][g_player_y] = 0;
+				playerMap[g_player_x][g_player_y] = 2;
 			}
 		}
-		if (c == 'a')
+		if (c == 'a' || c == 'A')
 		{
-			if (map[g_player_x][g_player_y - 1] != 1)
+			if (playerMap[g_player_x][g_player_y - 1] != 1)
 			{
-				map[g_player_x][g_player_y--] = 0;
-				map[g_player_x][g_player_y] = 2;
+				playerMap[g_player_x][g_player_y--] = 0;
+				playerMap[g_player_x][g_player_y] = 2;
 			}
 		}
-		if (c == 'd')
+		if (c == 'd' || c == 'D')
 		{
-			if (map[g_player_x][g_player_y + 1] != 1)
+			if (playerMap[g_player_x][g_player_y + 1] != 1)
 			{
-				map[g_player_x][g_player_y++] = 0;
-				map[g_player_x][g_player_y] = 2;
+				playerMap[g_player_x][g_player_y++] = 0;
+				playerMap[g_player_x][g_player_y] = 2;
 			}
 		}
-		if (c == 'z')
-			exit(0);
+		if (c == 'z' || c == 'Z')
+			break;
 
 		system("cls");
-		SetDisplayMap(displayMap, map);
-		DisplayMap(map);
-
-		DisplayBoard(displayMap);
+		SetDisplayMap(displayMap, playerMap);
+		mapViewer.DisplayMap(playerMap);
+		mapViewer.SetRenderedMap(displayMap);
+		mapViewer.Rendering();
 	}
-	//GameManager::GetInstance().GameStart();
+	GameManager::GetInstance().GameStart();
 }
