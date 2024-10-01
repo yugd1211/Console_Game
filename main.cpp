@@ -89,15 +89,16 @@ void SetRightEdgeWall(vector<vector<string>>& board, int in_line, int num)
 void SetLeftHorizontalWall(vector<vector<string>>& board, const vector<vector<int>>& playerMap, int in_line, int num)
 {
 	int playerFor = GetNearestPlayerForward(playerMap);
-	//cout << "SetLeftVerticalWall st\n";
-	//cout << "inline = " << in_line << ", num = " << num << "\n";
-	//cout << "playerFor = " << playerFor << "\n";
-	//cout << "(g_player_x - playerFor) * MOVE_STEP_SIZE = " << (g_player_x - playerFor) * MOVE_STEP_SIZE << "\n";
-	//cout << "num = " << num << "\n";
-	//cout << "SetLeftVerticalWall en\n\n";
 
 	if ((g_player_x - playerFor) * MOVE_STEP_SIZE < in_line)
 		return;
+	if (in_line + num > MAP_SIZE / 2)
+	{
+		//아직버그있음 시간 남으면 고칠것
+		//int n = in_line + num - MAP_SIZE / 2;
+		//in_line -= n;
+		return;
+	}
 	for (int i = 0; i < num; i++)
 	{
 		board[in_line + num][in_line + i] = Void;
@@ -112,6 +113,12 @@ void SetRightHorizontalWall(vector<vector<string>>& board, const vector<vector<i
 
 	if (MAP_SIZE - (g_player_x - playerFor) * MOVE_STEP_SIZE > in_line)
 		return;
+	if (in_line - num < MAP_SIZE / 2)
+	{
+		//int n = MAP_SIZE / 2 - in_line - num;
+		//in_line += n;
+		return;
+	}
 	for (int i = 0; i < num; i++)
 	{
 		board[in_line - num][in_line - i] = Void;
@@ -145,16 +152,16 @@ void SetRightVerticalWall(vector<vector<string>>& board, const vector<vector<int
 {
 	int playerFor = GetNearestPlayerForward(playerMap);
 	//오른쪽에서 코너까지의 벽
-	for (int i = MAP_SIZE - in_line; i < in_line; i++)
+	for (int i = MAP_SIZE - in_line - 1; i <= in_line; i++)
 	{
-		if (in_line - 1 < MAP_SIZE - ((g_player_x - playerFor) * MOVE_STEP_SIZE))
+		if (in_line < MAP_SIZE - ((g_player_x - playerFor) * MOVE_STEP_SIZE))
 			continue;
 		//if (i >= 0 && i <= MAP_SIZE && in_line >= MAP_SIZE / 2 - 2)
-		board[i][in_line - 1] = Void;
+		board[i][in_line] = Void;
 	}
 	//코너에서 전방까지의 벽
-	int out_line = in_line - num - 1;
-	for (int i = MAP_SIZE - in_line + num; i <= out_line; i++)
+	int out_line = in_line - num;
+	for (int i = MAP_SIZE  - out_line - 1; i <= out_line; i++)
 	{
 		if (out_line < MAP_SIZE - ((g_player_x - playerFor) * MOVE_STEP_SIZE))
 			continue;
@@ -272,9 +279,8 @@ void SetOutLine(vector<vector<string>>& displayBoard, const vector<vector<int>>&
 		{
 
 			int rightPathCnt = GetZeroSize(playerMap, i, 1);
-			cout << "rightPathCnt = " << rightPathCnt << "\n";
 			SetRightEdgeWall(displayBoard, (MAP_SIZE - 1) - (g_player_x - i) * MOVE_STEP_SIZE, MOVE_STEP_SIZE * rightPathCnt);
-			SetRightVerticalWall(displayBoard, playerMap, (MAP_SIZE)-(g_player_x - i) * MOVE_STEP_SIZE, MOVE_STEP_SIZE * rightPathCnt);
+			SetRightVerticalWall(displayBoard, playerMap, (MAP_SIZE - 1) - (g_player_x - i) * MOVE_STEP_SIZE, MOVE_STEP_SIZE * rightPathCnt);
 			SetRightHorizontalWall(displayBoard, playerMap, (MAP_SIZE - 1) - (g_player_x - i) * MOVE_STEP_SIZE, MOVE_STEP_SIZE * rightPathCnt);
 
 			i -= rightPathCnt;
@@ -292,7 +298,7 @@ void DisplayMap(vector<vector<int>> map)
 			if (nxt1 == 1)
 				cout << "■";
 			else if (nxt1 == 2)
-				cout << "★";
+				cout << "▲";
 			else if (nxt1 == 0)
 				cout << "  ";
 		}
@@ -323,22 +329,22 @@ void InitMap(vector<vector<int>>& board, int size)
 	for (int i = 0; i < board.size(); i++)
 		board[i] = vector<int>(size);
 
-	//for (int i = 0; i < size; i++)
-	//{
-	//	board[0][i] = 1;
-	//	board[i][0] = 1;
-	//	board[size - 1][i] = 1;
-	//	board[i][size - 1] = 1;
-	//}
-	//for (int i = 1; i < size - 1; i++)
-	//{
-	//	for (int j = 1; j < size - 1; j++)
-	//	{
-	//		if (board[i][j] != 0)
-	//			continue;
-	//		board[i][j] = rand() % 6 >= 4 ? 1 : 0;
-	//	}
-	//}
+	for (int i = 0; i < size; i++)
+	{
+		board[0][i] = 1;
+		board[i][0] = 1;
+		board[size - 1][i] = 1;
+		board[i][size - 1] = 1;
+	}
+	for (int i = 1; i < size - 1; i++)
+	{
+		for (int j = 1; j < size - 1; j++)
+		{
+			if (board[i][j] != 0)
+				continue;
+			board[i][j] = rand() % 6 >= 4 ? 1 : 0;
+		}
+	}
 }
 
 void UpdatePlayerPosition(vector<vector<int>>& map)
@@ -412,7 +418,7 @@ int main()
 	//	{1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
 	//};
 	//vector<vector<int>> map;
-	//InitMap(map, 10);
+	//InitMap(map, 50);
 	vector<vector<string>> displayMap(MAP_SIZE);
 	InitDisplayMap(displayMap);
 	g_player_x = 1;
