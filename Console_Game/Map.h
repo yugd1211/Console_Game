@@ -4,6 +4,7 @@
 #include <vector>
 #include "Position.h"
 #include "Scene.h"
+#include "Player.h"
 #include "Enum.h"
 
 using namespace std;
@@ -27,7 +28,9 @@ public:
 	MAP_ELEMENT CheckPosition(Position &pos);
 	void Swap(Position a, Position b);
 	vector<vector<int>> board;
-
+	void ChangeLeftDirection();
+	void ChangeRightDirection();
+	void UpdatePlayerPosition();
 private:
 	int size;
 	Scene* scene;

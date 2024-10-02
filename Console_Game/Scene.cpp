@@ -12,7 +12,7 @@ Position Scene::GetPlayerPosition() const
 	return playerPos;
 }
 
-void Scene::MovePlayer(DIRECTION dir)
+void Scene::MovePlayer(KEY_INPUT dir)
 {
 	Position nxt = Position(player->pos);
 	nxt.x = player->pos.x + dx[dir];

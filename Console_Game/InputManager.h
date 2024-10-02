@@ -5,6 +5,6 @@
 class InputManager : public Singleton<InputManager>
 {
 public:
-	DIRECTION InputPathway();
+	KEY_INPUT InputPathway();
 };
 

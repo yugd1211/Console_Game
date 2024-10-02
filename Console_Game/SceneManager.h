@@ -5,8 +5,11 @@
 #include "Scene.h"
 #include "Enum.h"
 #include "Singleton.h"
+#include "InputManager.h"
+#include <queue>
 
 class Player;
+class GamaManager;
 using namespace std;
 
 class SceneManager : public Singleton<SceneManager>
@@ -20,6 +23,7 @@ public:
 	bool SetCurrentScene(const int& index);
 
 	Scene* MakeScene();
+	Scene* MakeScene(vector<vector<int>> &board);
 	Scene* GetCurrentScene();
 	int GetCurrentSceneIndex();
 	bool IsGameEnd();

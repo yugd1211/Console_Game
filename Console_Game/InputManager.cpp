@@ -1,15 +1,21 @@
 #include "InputManager.h"
 
-DIRECTION InputManager::InputPathway()
+KEY_INPUT InputManager::InputPathway()
 {
 	char c = _getch();
 	if (c == 72 || c == 'w')
-		return DIRECTION::UP;
+		return KEY_INPUT::UP;
 	else if (c == 75 || c == 'a')
-		return DIRECTION::LEFT;
+		return KEY_INPUT::LEFT;
 	else if (c == 80 || c == 's')
-		return DIRECTION::DOWN;
+		return KEY_INPUT::DOWN;
 	else if (c == 77 || c == 'd')
-		return DIRECTION::RIGHT;
-	return DIRECTION::NONE;
+		return KEY_INPUT::RIGHT;
+	else if (c == '`')
+		return KEY_INPUT::GAME_OVER;
+	else if (c == 'q')
+		return KEY_INPUT::TURN_LEFT;
+	else if (c == 'e')
+		return KEY_INPUT::TURN_RIGHT;
+	return KEY_INPUT::NONE;
 }

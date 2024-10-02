@@ -49,4 +49,44 @@ void Map::Swap(Position a, Position b)
 	board[b.x][b.y] = tmp;
 }
 
+void Map::UpdatePlayerPosition()
+{
+	for (int i = 0; i < board.size(); i++)
+	{
+		for (int j = 0; j < board.size(); j++)
+		{
+			if (board[i][j] == MAP_ELEMENT::PLAYER)
+			{
+				scene->player->pos.x = i;
+				scene->player->pos.y = j;
+				return;
+			}
+		}
+	}
+}
+
+void Map::ChangeLeftDirection()
+{
+	for (int i = 0; i < board.size() - 1; i++)
+		for (int j = 0; j < i; j++)
+			swap(board[i][j], board[j][i]);
+
+	for (int i = 0; i < board.size(); i++)
+		for (int j = 0; j < board.size() / 2; j++)
+			swap(board[i][j], board[i][board.size() - 1 - j]);
+	UpdatePlayerPosition();
+}
+
+void Map::ChangeRightDirection()
+{
+	for (int i = 0; i < board.size() - 1; i++)
+		for (int j = 0; j < board.size() - i - 1; j++)
+			swap(board[i][j], board[board.size() - j - 1][board.size() - i - 1]);
+
+	for (int i = 0; i < board.size(); i++)
+		for (int j = 0; j < board.size() / 2; j++)
+			swap(board[i][j], board[i][board.size() - j - 1]);
+	UpdatePlayerPosition();
+}
+
 

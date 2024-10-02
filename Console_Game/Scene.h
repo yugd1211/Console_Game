@@ -6,13 +6,15 @@ class Map;
 class SceneManager;
 #include "Position.h"
 #include "Enum.h"
+#include "MapViewer.h"
 using namespace std;
 
 
 class Scene
 {
 public:
-	Scene(SceneManager *sceneManager) : sceneManager(sceneManager), player(nullptr), map(nullptr) {};
+	Scene(SceneManager *sceneManager) : 
+		sceneManager(sceneManager), player(nullptr), map(nullptr), viewer(nullptr) {};
 	~Scene() 
 	{
 		cout << "scene ¼Ò¸êÀÚ\n";
@@ -23,13 +25,14 @@ public:
 	}
 	void SetPlayerPosition(Position pos);
 	Position GetPlayerPosition() const;
-	void MovePlayer(DIRECTION dir);
+	void MovePlayer(KEY_INPUT dir);
 	void EXIT();
 
 	Player* player;
 	Map* map;
+	MapViewer* viewer;
+	Position playerPos;
 private:
 	SceneManager* sceneManager;
-	Position playerPos;
 };
 

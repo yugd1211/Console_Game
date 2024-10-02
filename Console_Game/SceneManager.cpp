@@ -1,6 +1,7 @@
 #include "SceneManager.h"
 #include "Player.h"
-#include <queue>
+#include "GameManager.h"
+//#include "Enum.h"
 
 SceneManager::~SceneManager()
 {
@@ -99,15 +100,42 @@ Position InitMap(vector<vector<int>>& board, int size)
 	{
 		for (int j = 1; j < size - 1; j++)
 		{
-			if (board[i][j] != MAP_ELEMENT::VOID)
+			if (board[i][j] != 0)
 				continue;
-			board[i][j] = rand() % 6 >= 4 ? MAP_ELEMENT::OBSTACLE : MAP_ELEMENT::VOID;
+			board[i][j] = rand() % 6 >= 4 ? MAP_ELEMENT::WALL : 0;
 		}
 	}
 	return Position(playerX, playerY);
 }
 
+vector<vector<int>> playerMap1 = {
+	{3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
+	{3, 0, 0, 0, 0, 0, 0, 0, 2, 3},
+	{3, 0, 3, 3, 3, 3, 3, 3, 3, 3},
+	{3, 0, 3, 3, 3, 3, 3, 3, 3, 3},
+	{3, 0, 3, 3, 3, 3, 3, 3, 3, 3},
+	{3, 0, 3, 3, 3, 3, 3, 3, 3, 3},
+	{3, 0, 3, 3, 3, 3, 3, 3, 3, 3},
+	{3, 0, 3, 3, 3, 3, 3, 3, 3, 3},
+	{3, 1, 3, 3, 3, 3, 3, 3, 3, 3},
+	{3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
+};
 
+vector<vector<int>> playerMap2 = {
+	{3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
+	{3, 0, 0, 0, 0, 0, 0, 0, 0, 3},
+	{3, 0, 3, 0, 3, 0, 3, 3, 0, 3},
+	{3, 0, 3, 0, 3, 0, 3, 3, 0, 3},
+	{3, 0, 3, 0, 3, 0, 3, 3, 0, 3},
+	{3, 0, 3, 0, 3, 0, 3, 3, 0, 3},
+	{3, 0, 3, 0, 3, 0, 3, 3, 0, 3},
+	{3, 0, 3, 0, 0, 0, 3, 3, 0, 3},
+	{3, 1, 3, 0, 0, 0, 3, 3, 2, 3},
+	{3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
+};
+
+
+// 맵도 같이 생성
 Scene* SceneManager::MakeScene()
 {
 	vector<vector<int>> board;
@@ -118,7 +146,13 @@ Scene* SceneManager::MakeScene()
 		scene->SetPlayerPosition(InitMap(board, BOARD_SIZE));
 	scene->player = new Player(scene, scene->GetPlayerPosition());
 	scene->map = new Map(scene, board);
+	scene->viewer = new MapViewer(scene->GetPlayerPosition());
 	return scene;
+}
+
+Scene* SceneManager::MakeScene(vector<vector<int>>& board)
+{
+	return nullptr;
 }
 
 Scene* SceneManager::GetCurrentScene()
@@ -146,5 +180,7 @@ void SceneManager::SetGameEnd(bool b)
 void SceneManager::LoadNextScene()
 {
 	if (!SetCurrentScene(currentSceneIndex + 1))
-		SetGameEnd(true);
+	{
+		GameManager::GetInstance().SetGameOver(true);
+	}
 }
