@@ -79,7 +79,6 @@ std::vector<std::vector<int>> tutorial2 = {
 	{3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
 };
 
-// 맵도 같이 생성
 Scene* SceneManager::MakeScene()
 {
 	static int cnt = 0;

@@ -19,11 +19,11 @@ public:
 	void Swap(Position a, Position b);
 	void ChangeLeftDirection();
 	void ChangeRightDirection();
-	void UpdatePlayerPosition();
 
 	std::vector<std::vector<int>> board;
 private:
 	int size;
 	Scene* scene;
+	void UpdatePlayerPosition();
 };
 

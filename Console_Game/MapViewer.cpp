@@ -34,7 +34,7 @@ void MapViewer::Rendering(vector<vector<int>>& map)
 
 	for (int i = 0; i < WINDOW_SIZE; i++)
 		for (int j = 0; j < WINDOW_SIZE; j++)
-			renderedMap[i][j] = Wall;
+			renderedMap[i][j] = PRINT_WALL;
 	SetStraight(map);
 	SetCornerBoundary(map);
 }
@@ -59,12 +59,12 @@ void MapViewer::SetStraight(vector<vector<int>>& map)
 	// 전방 벽
 	for (int i = cornerPosition; i < WINDOW_SIZE - cornerPosition; i++)
 	{
-		renderedMap[cornerPosition][i] = Void;
-		renderedMap[WINDOW_SIZE - cornerPosition - 1][i] = Void;
+		renderedMap[cornerPosition][i] = PRINT_VOID;
+		renderedMap[WINDOW_SIZE - cornerPosition - 1][i] = PRINT_VOID;
 		if (map[forward + 1][playerPos.y - 1] == MAP_ELEMENT::WALL)
-			renderedMap[i][cornerPosition] = Void;
+			renderedMap[i][cornerPosition] = PRINT_VOID;
 		if (map[forward + 1][playerPos.y + 1] == MAP_ELEMENT::WALL)
-			renderedMap[i][WINDOW_SIZE - cornerPosition - 1] = Void;
+			renderedMap[i][WINDOW_SIZE - cornerPosition - 1] = PRINT_VOID;
 	}
 
 
@@ -76,8 +76,8 @@ void MapViewer::SetStraight(vector<vector<int>>& map)
 		{
 			for (int j = 0; j < FIXEL_SIZE; j++)
 			{
-				renderedMap[WINDOW_SIZE - (((playerPos.x - i) * FIXEL_SIZE) + j) - 1][((playerPos.x - i) * FIXEL_SIZE) + j] = Void;
-				renderedMap[((playerPos.x - i) * FIXEL_SIZE) + j][((playerPos.x - i) * FIXEL_SIZE) + j] = Void;
+				renderedMap[WINDOW_SIZE - (((playerPos.x - i) * FIXEL_SIZE) + j) - 1][((playerPos.x - i) * FIXEL_SIZE) + j] = PRINT_VOID;
+				renderedMap[((playerPos.x - i) * FIXEL_SIZE) + j][((playerPos.x - i) * FIXEL_SIZE) + j] = PRINT_VOID;
 			}
 		}
 	}
@@ -89,8 +89,8 @@ void MapViewer::SetStraight(vector<vector<int>>& map)
 		{
 			for (int j = 0; j < FIXEL_SIZE; j++)
 			{
-				renderedMap[((playerPos.x - i) * FIXEL_SIZE) + j][WINDOW_SIZE - (((playerPos.x - i) * FIXEL_SIZE) + j) - 1] = Void;
-				renderedMap[WINDOW_SIZE - (((playerPos.x - i) * FIXEL_SIZE) + j) - 1][WINDOW_SIZE - (((playerPos.x - i) * FIXEL_SIZE) + j) - 1] = Void;
+				renderedMap[((playerPos.x - i) * FIXEL_SIZE) + j][WINDOW_SIZE - (((playerPos.x - i) * FIXEL_SIZE) + j) - 1] = PRINT_VOID;
+				renderedMap[WINDOW_SIZE - (((playerPos.x - i) * FIXEL_SIZE) + j) - 1][WINDOW_SIZE - (((playerPos.x - i) * FIXEL_SIZE) + j) - 1] = PRINT_VOID;
 			}
 		}
 	}
@@ -132,8 +132,8 @@ void MapViewer::SetLeftEdgeWall(int cornerPosition, int cornerLenght)
 	{
 		if (i < 0 || i >= WINDOW_SIZE / 2 - 1)
 			continue;
-		renderedMap[i][i] = Wall;
-		renderedMap[WINDOW_SIZE - i - 1][i] = Wall;
+		renderedMap[i][i] = PRINT_WALL;
+		renderedMap[WINDOW_SIZE - i - 1][i] = PRINT_WALL;
 	}
 }
 
@@ -145,8 +145,8 @@ void MapViewer::SetRightEdgeWall(int cornerPosition, int cornerLenght)
 	{
 		if (i < WINDOW_SIZE / 2 || i >= WINDOW_SIZE)
 			continue;
-		renderedMap[i][i] = Wall;
-		renderedMap[WINDOW_SIZE - i - 1][i] = Wall;
+		renderedMap[i][i] = PRINT_WALL;
+		renderedMap[WINDOW_SIZE - i - 1][i] = PRINT_WALL;
 	}
 }
 
@@ -160,8 +160,8 @@ void MapViewer::SetLeftHorizontalWall(vector<vector<int>>& map, int cornerPositi
 		return;
 	for (int i = 0; i < cornerLenght; i++)
 	{
-		renderedMap[cornerPosition + cornerLenght][cornerPosition + i] = Void;
-		renderedMap[WINDOW_SIZE - 1 - (cornerPosition + cornerLenght)][cornerPosition + i] = Void;
+		renderedMap[cornerPosition + cornerLenght][cornerPosition + i] = PRINT_VOID;
+		renderedMap[WINDOW_SIZE - 1 - (cornerPosition + cornerLenght)][cornerPosition + i] = PRINT_VOID;
 	}
 
 }
@@ -176,8 +176,8 @@ void MapViewer::SetRightHorizontalWall(vector<vector<int>>& map, int cornerPosit
 		return;
 	for (int i = 0; i < cornerLenght; i++)
 	{
-		renderedMap[cornerPosition - cornerLenght][cornerPosition - i] = Void;
-		renderedMap[WINDOW_SIZE - 1 - (cornerPosition - cornerLenght)][cornerPosition - i] = Void;
+		renderedMap[cornerPosition - cornerLenght][cornerPosition - i] = PRINT_VOID;
+		renderedMap[WINDOW_SIZE - 1 - (cornerPosition - cornerLenght)][cornerPosition - i] = PRINT_VOID;
 	}
 }
 
@@ -188,7 +188,7 @@ void MapViewer::SetLeftVerticalWall(vector<vector<int>>& map, int cornerPosition
 	{
 		if (cornerPosition - 1 > ((playerPos.x - playerFor) * FIXEL_SIZE))
 			continue;
-		renderedMap[i][cornerPosition] = Void;
+		renderedMap[i][cornerPosition] = PRINT_VOID;
 	}
 
 	int endPosition = cornerPosition + cornerLenght;
@@ -198,7 +198,7 @@ void MapViewer::SetLeftVerticalWall(vector<vector<int>>& map, int cornerPosition
 	{
 		if (cornerPosition - 1 > ((playerPos.x - playerFor) * FIXEL_SIZE))
 			continue;
-		renderedMap[i][endPosition] = Void;
+		renderedMap[i][endPosition] = PRINT_VOID;
 	}
 }
 
@@ -210,7 +210,7 @@ void MapViewer::SetRightVerticalWall(vector<vector<int>>& map, int cornerPositio
 	{
 		if (cornerPosition < WINDOW_SIZE - ((playerPos.x - playerFor) * FIXEL_SIZE))
 			continue;
-		renderedMap[i][cornerPosition] = Void;
+		renderedMap[i][cornerPosition] = PRINT_VOID;
 	}
 	//코너에서 전방까지의 벽
 	int endPosition = cornerPosition - cornerLenght;
@@ -218,7 +218,7 @@ void MapViewer::SetRightVerticalWall(vector<vector<int>>& map, int cornerPositio
 	{
 		if (endPosition < WINDOW_SIZE - ((playerPos.x - playerFor) * FIXEL_SIZE))
 			continue;
-		renderedMap[i][endPosition] = Void;
+		renderedMap[i][endPosition] = PRINT_VOID;
 	}
 }
 
