@@ -1,4 +1,5 @@
 #include "BufferManager.h"
+#include "Enum.h"
 using namespace std;
 
 void BufferManager::Init()
@@ -14,12 +15,11 @@ void BufferManager::Init()
 	screen[0] = CreateConsoleScreenBuffer(GENERIC_READ | GENERIC_WRITE, 0, NULL, CONSOLE_TEXTMODE_BUFFER, NULL);
 	screen[1] = CreateConsoleScreenBuffer(GENERIC_READ | GENERIC_WRITE, 0, NULL, CONSOLE_TEXTMODE_BUFFER, NULL);
 
-	// 커서를 숨긴다.
-	//cci.dwSize = 1;
-	//cci.bVisible = FALSE;
-	// 해당 정보를 콘솔에 적용
-	//SetConsoleCursorInfo(screen[0], &cci);
-	//SetConsoleCursorInfo(screen[1], &cci);
+	// 콘솔 커서 설정 (안보이게 설정)
+	cci.bVisible = FALSE;
+	// 해당 커서 설정을 콘솔에 적용
+	SetConsoleCursorInfo(screen[0], &cci);
+	SetConsoleCursorInfo(screen[1], &cci);
 }
 
 void BufferManager::SwitchScreenBuffer()
@@ -29,32 +29,13 @@ void BufferManager::SwitchScreenBuffer()
 	screenIndex = !screenIndex;
 }
 
-void BufferManager::ScreenClear()
-{
-	COORD Coor = { 0, 0 };
-	DWORD dw;
-	// 특정 콘솔을 특정 문자로 채우는 함수
-	// 콘솔, 채울 문자, 채울 문자 수, 시작 좌표, 실제로 채워진 문자 수
-	// 빈문자로 채우는 과정
-	buffer.clear();
-	//buffer = string();
-	FillConsoleOutputCharacter(screen[screenIndex], ' ', 80 * 40, Coor, &dw);
-
-}
-
-void BufferManager::ScreenPrint(int x, int y, const char* string)
-{
-	DWORD dw;
-	COORD CursorPosition = { x, y };
-	SetConsoleCursorPosition(screen[screenIndex], CursorPosition);
-	WriteFile(screen[screenIndex], string, strlen(string), &dw, NULL);
-}
-
 void BufferManager::Render()
 {
-	ScreenPrint(0, 0, buffer.c_str());
+	SetConsoleCursorPosition(screen[screenIndex], {0, 0});
+	WriteFile(screen[screenIndex], buffer.c_str(), buffer.size(), NULL, NULL);
 	SwitchScreenBuffer();
-	ScreenClear();
+	buffer.clear();
+	buffer = string();
 }
 
 void BufferManager::AddToBuffer(const string &string)

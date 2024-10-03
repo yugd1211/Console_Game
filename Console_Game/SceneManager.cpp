@@ -1,7 +1,7 @@
 #include "SceneManager.h"
 #include "Player.h"
 #include "GameManager.h"
-//#include "Enum.h"
+#include "BufferManager.h"
 
 SceneManager::~SceneManager()
 {
@@ -36,7 +36,7 @@ void SceneManager::RemoveScene(const int& index)
 		scenes.erase(iter);
 	}
 	else
-		cout << "해당 씬은 존재하지 않습니다." << endl;
+		BufferManager::GetInstance().AddToBuffer("해당 씬은 존재하지 않습니다.\n");
 }
 
 bool SceneManager::SetCurrentScene(const int& index)

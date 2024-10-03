@@ -36,6 +36,6 @@ enum MAP_ELEMENT
 	WALL,
 	OBSTACLE,
 	ENEMY,
-	OTHER, // 다른 이벤트? 혹은 ROOM?, EXIT이랑 합쳐서 Stage를 캡슐화해서 해당 stage가 이벤트 혹은 게임 종료의 트리거로 하는 방식으로 해도 될듯 
+	OTHER,
 };
 

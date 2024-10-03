@@ -1,4 +1,5 @@
 #include "MapViewer.h"
+#include "BufferManager.h"
 
 using namespace std;
 
@@ -19,9 +20,9 @@ void MapViewer::Display() const
 	for (auto vec : renderedMap)
 	{
 		for (auto iter : vec)
-			cout << iter;
+			BufferManager::GetInstance().AddToBuffer(iter);
 	}
-	cout << endl;
+	BufferManager::GetInstance().AddToBuffer("\n");
 }
 
 void MapViewer::Rendering(vector<vector<int>>& map)

@@ -1,4 +1,5 @@
 #include "Map.h"
+#include "BufferManager.h"
 
 using namespace std;
 Map::Map(Scene* scene, const vector<vector<int>>& board) : scene(scene), board(board), size(board.size())
@@ -12,19 +13,17 @@ void Map::Display() const
 		for (int j = 0; j < board.size(); j++)
 		{
 			if (board[i][j] == MAP_ELEMENT::PLAYER)
-			{
-				cout << PRINT_PLAYER;
-			}
+				BufferManager::GetInstance().AddToBuffer(PRINT_PLAYER);
 			else if (board[i][j] == MAP_ELEMENT::WALL)
-				cout << PRINT_WALL;
+				BufferManager::GetInstance().AddToBuffer(PRINT_WALL);
 			else if (board[i][j] == MAP_ELEMENT::OBSTACLE)
-				cout << PRINT_OBSTACLE;
+				BufferManager::GetInstance().AddToBuffer(PRINT_OBSTACLE);
 			else if (board[i][j] == MAP_ELEMENT::EXIT)
-				cout << PRINT_EXIT;
+				BufferManager::GetInstance().AddToBuffer(PRINT_EXIT);
 			else
-				cout << "  ";
+				BufferManager::GetInstance().AddToBuffer("  ");
 		}
-		cout << "\n";
+		BufferManager::GetInstance().AddToBuffer("\n");
 	}
 }
 

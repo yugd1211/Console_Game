@@ -1,31 +1,39 @@
 #include "GameManager.h"
-#include "Enum.h"
 #include "SceneManager.h"
+#include "BufferManager.h"
+#include "Enum.h"
+#include <sstream>
 
 void GameManager::DisplayKeyGuide() const
 {
 	static int widthSize = WINDOW_SIZE - 1;
-	string stage = " 현재 스테이지 : ";
-	stage += SceneManager::GetInstance().GetCurrentSceneIndex() + '0';
-	for (int i = 0; i < WINDOW_SIZE; i++)
-		cout << PRINT_WALL;
-	cout << endl;
-	cout << PRINT_WALL << setw(widthSize * 2) << right << PRINT_WALL << "\n";
+	std::ostringstream oss;
 
-	cout << PRINT_WALL << setw(widthSize) << stage << setw(widthSize) << PRINT_WALL << "\n";
-	cout << PRINT_WALL << setw(widthSize * 2) << right << PRINT_WALL << "\n";
-	cout << PRINT_WALL << setw(widthSize) << " 키보드 입력" << setw(widthSize) << PRINT_WALL << "\n";
-	cout << PRINT_WALL << setw(widthSize * 2) << right << PRINT_WALL << "\n";
-	cout << PRINT_WALL << setw(widthSize) << " w || ↑ : 위로이동" << setw(widthSize) << PRINT_WALL << "\n";
-	cout << PRINT_WALL << setw(widthSize) << " a || ← : 좌로이동" << setw(widthSize) << PRINT_WALL << "\n";
-	cout << PRINT_WALL << setw(widthSize) << " s || → : 우로이동" << setw(widthSize) << PRINT_WALL << "\n";
-	cout << PRINT_WALL << setw(widthSize) << " d || ↓ : 아래로이동" << setw(widthSize) << PRINT_WALL<< "\n";
-	
-	cout << PRINT_WALL << setw(widthSize * 2) << right << PRINT_WALL << "\n";
 	for (int i = 0; i < WINDOW_SIZE; i++)
-		cout << PRINT_WALL;
-	cout << endl;
-	cout << endl;
+		BufferManager::GetInstance().AddToBuffer(PRINT_WALL);
+	BufferManager::GetInstance().AddToBuffer("\n");
+
+
+	oss << PRINT_WALL << setw(widthSize * 2) << right << PRINT_WALL << "\n";
+
+	oss << PRINT_WALL << setw(widthSize) << " 현재 스테이지 : " + to_string(SceneManager::GetInstance().GetCurrentSceneIndex()) << setw(widthSize) << PRINT_WALL << "\n";
+	oss << PRINT_WALL << setw(widthSize * 2) << right << PRINT_WALL << "\n";
+	oss << PRINT_WALL << setw(widthSize) << " 키보드 입력" << setw(widthSize) << PRINT_WALL << "\n";
+	oss << PRINT_WALL << setw(widthSize * 2) << right << PRINT_WALL << "\n";
+	oss << PRINT_WALL << setw(widthSize) << " Q : 좌로 방향전환" << setw(widthSize) << PRINT_WALL << "\n";
+	oss << PRINT_WALL << setw(widthSize) << " E : 우로 방향전환" << setw(widthSize) << PRINT_WALL << "\n";
+	oss << PRINT_WALL << setw(widthSize) << " W || ↑ : 위로 이동" << setw(widthSize) << PRINT_WALL << "\n";
+	oss << PRINT_WALL << setw(widthSize) << " A || ← : 좌로 이동" << setw(widthSize) << PRINT_WALL << "\n";
+	oss << PRINT_WALL << setw(widthSize) << " S || → : 우로 이동" << setw(widthSize) << PRINT_WALL << "\n";
+	oss << PRINT_WALL << setw(widthSize) << " D || ↓ : 아래로 이동" << setw(widthSize) << PRINT_WALL << "\n";
+
+	oss << PRINT_WALL << setw(widthSize * 2) << right << PRINT_WALL << "\n";
+	for (int i = 0; i < WINDOW_SIZE; i++)
+		oss << PRINT_WALL;
+	oss << "\n";
+	oss << "\n";
+	BufferManager::GetInstance().AddToBuffer(oss.str());
+
 }
 
 void GameManager::DisplayWindow() const
@@ -35,7 +43,7 @@ void GameManager::DisplayWindow() const
 	SceneManager::GetInstance().GetCurrentScene()->viewer->Display();
 	DisplayKeyGuide();
 	SceneManager::GetInstance().GetCurrentScene()->map->Display();
-	//BufferManager::GetInstance().Render();
+	BufferManager::GetInstance().Render();
 }
 
 
@@ -46,13 +54,12 @@ void GameManager::GameStart()
 	{
 		if (GameOver())
 			Win();
-		//Sleep(30);
+		Sleep(30);
 		KEY_INPUT dir = InputManager::GetInstance().GetInput();
 		if (dir == KEY_INPUT::GAME_OVER)
 			GameExit();
 		if (dir == KEY_INPUT::NONE)
 			continue;
-		system("cls");
 		SceneManager::GetInstance().GetCurrentScene()->MovePlayer(dir);
 		DisplayWindow();
 	}
@@ -60,7 +67,6 @@ void GameManager::GameStart()
 
 void GameManager::Win() const
 {
-	system("cls");
 	cout << "축하합니다. 게임을 클리어하셨습니다.\n";
 	cout << "축하합니다. 게임을 클리어하셨습니다.\n";
 	cout << "축하합니다. 게임을 클리어하셨습니다.\n";
@@ -84,7 +90,6 @@ void GameManager::Win() const
 
 void GameManager::GameExit() const
 {
-	system("cls");
 	cout << "게임을 종료합니다~~~~~~~~~~~~~~~~~~~\n";
 	cout << "게임을 종료합니다~~~~~~~~~~~~~~~~~~~\n";
 	cout << "게임을 종료합니다~~~~~~~~~~~~~~~~~~~\n";
