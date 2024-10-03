@@ -1,6 +1,6 @@
 #include "InputManager.h"
 
-KEY_INPUT InputManager::InputPathway()
+KEY_INPUT InputManager::GetInput()
 {
 	char c = _getch();
 	if (c == 72 || c == 'w')

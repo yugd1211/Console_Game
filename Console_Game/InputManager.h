@@ -5,6 +5,6 @@
 class InputManager : public Singleton<InputManager>
 {
 public:
-	KEY_INPUT InputPathway();
+	KEY_INPUT GetInput();
 };
 

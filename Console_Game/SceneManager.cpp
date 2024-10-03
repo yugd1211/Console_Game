@@ -5,7 +5,6 @@
 
 SceneManager::~SceneManager()
 {
-	cout << "ScceneManager ¼Ò¸êÀÚ \n";
 	for (auto& pair : scenes)
 	{
 		if (pair.second == nullptr)
@@ -79,10 +78,8 @@ bool CheckCurrectPath(vector<vector<int>>& board, Position st, Position en)
 	return false;
 }
 
-Position InitMap(vector<vector<int>>& board, int size)
+void InitMap(vector<vector<int>>& board, int size, Position playerPos)
 {
-	int playerX = 1;
-	int playerY = 1;
 	board = vector<vector<int>>(size);
 	for (int i = 0; i < board.size(); i++)
 		board[i] = vector<int>(size);
@@ -94,18 +91,18 @@ Position InitMap(vector<vector<int>>& board, int size)
 		board[size - 1][i] = MAP_ELEMENT::WALL;
 		board[i][size - 1] = MAP_ELEMENT::WALL;
 	}
-	board[playerX][playerY] = MAP_ELEMENT::PLAYER;
-	board[size - 2][size - 2] = MAP_ELEMENT::EXIT;
+
 	for (int i = 1; i < size - 1; i++)
 	{
 		for (int j = 1; j < size - 1; j++)
 		{
 			if (board[i][j] != 0)
 				continue;
-			board[i][j] = rand() % 6 >= 4 ? MAP_ELEMENT::WALL : 0;
+			board[i][j] = rand() % MAP_WALL_RAN != 0 ? MAP_ELEMENT::WALL : 0;
 		}
 	}
-	return Position(playerX, playerY);
+	board[playerPos.x][playerPos.y] = MAP_ELEMENT::PLAYER;
+	board[size - 2][size - 2] = MAP_ELEMENT::EXIT;
 }
 
 vector<vector<int>> playerMap1 = {
@@ -123,7 +120,7 @@ vector<vector<int>> playerMap1 = {
 
 vector<vector<int>> playerMap2 = {
 	{3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
-	{3, 0, 0, 0, 0, 0, 0, 0, 0, 3},
+	{3, 0, 0, 0, 3, 0, 0, 0, 0, 3},
 	{3, 0, 3, 0, 3, 0, 3, 3, 0, 3},
 	{3, 0, 3, 0, 3, 0, 3, 3, 0, 3},
 	{3, 0, 3, 0, 3, 0, 3, 3, 0, 3},
@@ -138,15 +135,28 @@ vector<vector<int>> playerMap2 = {
 // ¸Êµµ °°ÀÌ »ý¼º
 Scene* SceneManager::MakeScene()
 {
+	static int cnt = 0;
+	cnt++;
 	vector<vector<int>> board;
 	Scene* scene = new Scene(this);
-
-	scene->SetPlayerPosition(InitMap(board, BOARD_SIZE));
-	while (!CheckCurrectPath(board, Position(1, 1), Position(board.size() - 2, board.size() - 2)))
-		scene->SetPlayerPosition(InitMap(board, BOARD_SIZE));
-	scene->player = new Player(scene, scene->GetPlayerPosition());
+	Position playerPos(1, 1);
+	if (cnt == 1)
+	{
+		board = playerMap1;
+		playerPos = Position(board.size() - 2, 1);
+	}
+	else if (cnt == 2)
+	{
+		board = playerMap2;
+		playerPos = Position(board.size() - 2, 1);
+	}
+	else
+		InitMap(board, BOARD_SIZE, playerPos);
+	while (!CheckCurrectPath(board, playerPos, Position(board.size() - 2, board.size() - 2)))
+		InitMap(board, BOARD_SIZE, playerPos);
+	scene->player = new Player(scene, playerPos);
 	scene->map = new Map(scene, board);
-	scene->viewer = new MapViewer(scene->GetPlayerPosition());
+	scene->viewer = new MapViewer(playerPos);
 	return scene;
 }
 

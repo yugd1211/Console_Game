@@ -4,7 +4,7 @@ Map::Map(Scene* scene, const vector<vector<int>>& board) : scene(scene), board(b
 {
 }
 
-void Map::DisplayMap() const
+void Map::Display() const
 {
 	for (int i = 0; i < board.size(); i++)
 	{

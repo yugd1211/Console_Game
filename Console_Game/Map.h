@@ -24,7 +24,7 @@ public:
 		vector<vector<int>>().swap(board);
 	}
 
-	void DisplayMap() const;
+	void Display() const;
 	MAP_ELEMENT CheckPosition(Position &pos);
 	void Swap(Position a, Position b);
 	vector<vector<int>> board;

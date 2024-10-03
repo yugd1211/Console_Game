@@ -2,14 +2,18 @@
 #include "Player.h"
 #include "SceneManager.h"
 
-void Scene::SetPlayerPosition(Position pos)
+
+Scene::Scene(SceneManager* sceneManager) :
+	sceneManager(sceneManager), player(nullptr), map(nullptr), viewer(nullptr) 
 {
-	playerPos = pos;
 }
 
-Position Scene::GetPlayerPosition() const
+Scene::~Scene()
 {
-	return playerPos;
+	if (player)
+		delete player;
+	if (map)
+		delete map;
 }
 
 void Scene::MovePlayer(KEY_INPUT dir)

@@ -40,40 +40,17 @@ KEY_INPUT InputPathway()
 
 void GameManager::GameStart()
 {
-	//vector<vector<int>> playerMap = {
-//	{1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-//	{1, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-//	{1, 0, 1, 0, 1, 0, 1, 1, 0, 1},
-//	{1, 0, 1, 0, 1, 0, 1, 1, 0, 1},
-//	{1, 0, 1, 0, 1, 0, 1, 1, 0, 1},
-//	{1, 0, 1, 0, 1, 0, 1, 1, 0, 1},
-//	{1, 0, 1, 0, 1, 0, 1, 1, 0, 1},
-//	{1, 0, 1, 0, 0, 0, 1, 1, 0, 1},
-//	{1, 0, 1, 0, 0, 0, 1, 1, 0, 1},
-//	{1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-//};
-	vector<vector<int>> playerMap = {
-		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-		{1, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-		{1, 0, 1, 1, 1, 1, 1, 1, 1, 1},
-		{1, 0, 1, 1, 1, 1, 1, 1, 1, 1},
-		{1, 0, 1, 1, 1, 1, 1, 1, 1, 1},
-		{1, 0, 1, 1, 1, 1, 1, 1, 1, 1},
-		{1, 0, 1, 1, 1, 1, 1, 1, 1, 1},
-		{1, 0, 1, 1, 1, 1, 1, 1, 1, 1},
-		{1, 2, 1, 1, 1, 1, 1, 1, 1, 1},
-		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-	};
-
-	if (MAX_GAME_COUNT < 1)
-		return ;
+	// ¾À »ý¼º
 	for (int i = 1; i <= MAX_GAME_COUNT; i++)
 		SceneManager::GetInstance().AddScene(i, SceneManager::GetInstance().MakeScene());
 	SceneManager::GetInstance().SetCurrentScene(1);
-	while (!GameOver())
+
+	while (true)
 	{
+		if (GameOver())
+			GameExit();
 		Sleep(30);
-		KEY_INPUT dir = InputManager::GetInstance().InputPathway();
+		KEY_INPUT dir = InputManager::GetInstance().GetInput();
 		if (dir == KEY_INPUT::GAME_OVER)
 			GameExit();
 		if (dir == KEY_INPUT::NONE)
@@ -88,11 +65,10 @@ void GameManager::GameStart()
 		}
 		else
 			SceneManager::GetInstance().GetCurrentScene()->MovePlayer(dir);
-		SceneManager::GetInstance().GetCurrentScene()->viewer->ApplyMap(SceneManager::GetInstance().GetCurrentScene()->map->board);
-		SceneManager::GetInstance().GetCurrentScene()->map->DisplayMap();
-
-		SceneManager::GetInstance().GetCurrentScene()->viewer->Rendering();
-
+		SceneManager::GetInstance().GetCurrentScene()->viewer->Rendering(
+			SceneManager::GetInstance().GetCurrentScene()->map->board);
+		SceneManager::GetInstance().GetCurrentScene()->map->Display();
+		SceneManager::GetInstance().GetCurrentScene()->viewer->Display();
 		DisplayPathway();
 	}
 }
