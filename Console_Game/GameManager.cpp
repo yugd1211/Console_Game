@@ -3,23 +3,32 @@
 #include "SceneManager.h"
 
 // state.Pathway
-void GameManager::DisplayPathway() const
+void GameManager::DisplayKeyGuide() const
 {
 
-	for (int i = 0; i < 72; i++)
+	for (int i = 0; i < WINDOW_SIZE; i++)
 		cout << PRINT_WALL;
 	cout << endl;
 	string stage = " 현재 스테이지 : ";
 	stage += SceneManager::GetInstance().GetCurrentSceneIndex() + '0';
-	cout << PRINT_WALL << setw(140) << left << stage << PRINT_WALL << "\n";
-	cout << PRINT_WALL << setw(140) << left << " 키보드 입력" << PRINT_WALL <<"\n";
-	cout << PRINT_WALL << setw(140) << left << " w || ↑ : 위로이동" << PRINT_WALL << "\n";
-	cout << PRINT_WALL << setw(140) << left << " a || ← : 좌로이동" << PRINT_WALL << "\n";
-	cout << PRINT_WALL << setw(140) << left << " s || → : 우로이동" << PRINT_WALL << "\n";
-	cout << PRINT_WALL << setw(140) << left << " d || ↓ : 아래로이동" << PRINT_WALL<< "\n";
-	for (int i = 0; i < 72; i++)
+	cout << PRINT_WALL << setw(WINDOW_SIZE * 2 - 4) << left << stage << PRINT_WALL << "\n";
+	cout << PRINT_WALL << setw(WINDOW_SIZE * 2 - 4) << left << " 키보드 입력" << PRINT_WALL << "\n";
+	cout << PRINT_WALL << setw(WINDOW_SIZE * 2 - 4) << left << " w || ↑ : 위로이동" << PRINT_WALL << "\n";
+	cout << PRINT_WALL << setw(WINDOW_SIZE * 2 - 4) << left << " a || ← : 좌로이동" << PRINT_WALL << "\n";
+	cout << PRINT_WALL << setw(WINDOW_SIZE * 2 - 4) << left << " s || → : 우로이동" << PRINT_WALL << "\n";
+	cout << PRINT_WALL << setw(WINDOW_SIZE * 2 - 4) << left << " d || ↓ : 아래로이동" << PRINT_WALL<< "\n";
+	for (int i = 0; i < WINDOW_SIZE; i++)
 		cout << PRINT_WALL;
 	cout << endl;
+}
+
+void GameManager::DisplayWindow() const
+{
+	SceneManager::GetInstance().GetCurrentScene()->viewer->Rendering(
+		SceneManager::GetInstance().GetCurrentScene()->map->board);
+	SceneManager::GetInstance().GetCurrentScene()->viewer->Display();
+	DisplayKeyGuide();
+	SceneManager::GetInstance().GetCurrentScene()->map->Display();
 }
 
 // state.Pathway
@@ -38,6 +47,7 @@ KEY_INPUT InputPathway()
 }
 
 
+
 void GameManager::GameStart()
 {
 	// 씬 생성
@@ -45,6 +55,7 @@ void GameManager::GameStart()
 		SceneManager::GetInstance().AddScene(i, SceneManager::GetInstance().MakeScene());
 	SceneManager::GetInstance().SetCurrentScene(1);
 
+	DisplayWindow();
 	while (true)
 	{
 		if (GameOver())
@@ -56,20 +67,8 @@ void GameManager::GameStart()
 		if (dir == KEY_INPUT::NONE)
 			continue;
 		system("cls");
-		if (dir == KEY_INPUT::TURN_LEFT || dir == KEY_INPUT::TURN_RIGHT)
-		{
-			if (dir == KEY_INPUT::TURN_LEFT)
-				SceneManager::GetInstance().GetCurrentScene()->map->ChangeLeftDirection();
-			else if (dir == KEY_INPUT::TURN_RIGHT)
-				SceneManager::GetInstance().GetCurrentScene()->map->ChangeRightDirection();
-		}
-		else
-			SceneManager::GetInstance().GetCurrentScene()->MovePlayer(dir);
-		SceneManager::GetInstance().GetCurrentScene()->viewer->Rendering(
-			SceneManager::GetInstance().GetCurrentScene()->map->board);
-		SceneManager::GetInstance().GetCurrentScene()->map->Display();
-		SceneManager::GetInstance().GetCurrentScene()->viewer->Display();
-		DisplayPathway();
+		SceneManager::GetInstance().GetCurrentScene()->MovePlayer(dir);
+		DisplayWindow();
 	}
 }
 

@@ -18,17 +18,24 @@ Scene::~Scene()
 
 void Scene::MovePlayer(KEY_INPUT dir)
 {
-	Position nxt = Position(player->pos);
-	nxt.x = player->pos.x + dx[dir];
-	nxt.y = player->pos.y + dy[dir];
-	MAP_ELEMENT nxtElement = map->CheckPosition(nxt);
-	if (nxtElement == MAP_ELEMENT::VOID)
+	if (dir == KEY_INPUT::TURN_LEFT)
+		map->ChangeLeftDirection();
+	if (dir == KEY_INPUT::TURN_RIGHT)
+		map->ChangeRightDirection();
+	else
 	{
-		map->Swap(player->pos, nxt);
-		player->pos = nxt;
+		Position nxt = Position(player->pos);
+		nxt.x = player->pos.x + dx[dir];
+		nxt.y = player->pos.y + dy[dir];
+		MAP_ELEMENT nxtElement = map->CheckPosition(nxt);
+		if (nxtElement == MAP_ELEMENT::VOID)
+		{
+			map->Swap(player->pos, nxt);
+			player->pos = nxt;
+		}
+		else if (nxtElement == MAP_ELEMENT::EXIT)
+			EXIT();
 	}
-	else if (nxtElement == MAP_ELEMENT::EXIT)
-		EXIT();
 }
 
 void Scene::EXIT()

@@ -1,6 +1,5 @@
 #pragma once
 #include "Singleton.h"
-//#include "SceneManager.h"
 #include "MapViewer.h"
 #include "Map.h"
 #include "Enum.h"
@@ -19,9 +18,10 @@ class GameManager : public Singleton<GameManager>
 public:
 	void GameStart();
 	void GameExit();
-	void DisplayPathway() const;
+	void DisplayKeyGuide() const;
 	bool GameOver() { return isGameOver; }
 	void SetGameOver(bool b) { isGameOver = b; }
+	void DisplayWindow() const;
 
 private:
 	bool isGameOver = false;
