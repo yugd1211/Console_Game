@@ -2,7 +2,6 @@
 #include "Singleton.h"
 #include <iostream>
 #include <Windows.h>
-#define BUF_SIZE 10240
 
 class BufferManager : public Singleton<BufferManager>
 {
