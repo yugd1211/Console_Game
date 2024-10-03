@@ -96,32 +96,26 @@ void MapViewer::SetStraight(vector<vector<int>>& map)
 			}
 		}
 	}
-	for (int i = playerX; i > forward; i--)
+	// forward = 0
+	//
+	for (int i = playerX; i >= 0; i--)
 	{
+		if (map[i][playerY] == MAP_ELEMENT::WALL)
+			return;
 		if (map[i][playerY] == MAP_ELEMENT::EXIT)
 		{
-			// 72 / 3 / 2 = 12
-			for (int i = 0; i < (MAP_SIZE / FIXEL_SIZE / 2) - (playerX - forward); i++)
-			{
-				for (int j = 0; j < (MAP_SIZE / FIXEL_SIZE / 2) - (playerX - forward); j+=2)
-				{
-					renderedMap[MAP_SIZE / 2 + i][MAP_SIZE / 2 + j - (playerX - forward)] = "EX";
-					renderedMap[MAP_SIZE / 2 + i][MAP_SIZE / 2 + 1 + j - (playerX - forward)] = "IT";
-					renderedMap[MAP_SIZE / 2 - i][MAP_SIZE / 2 + j - (playerX - forward)] = "EX";
-					renderedMap[MAP_SIZE / 2 - i][MAP_SIZE / 2 + 1 + j - (playerX - forward)] = "IT";
-				}
-				for (int j = (MAP_SIZE / FIXEL_SIZE / 2) - (playerX - forward); j > 0; j -= 2)
-				{
-					renderedMap[MAP_SIZE / 2 + i][MAP_SIZE / 2 + j] = "EX";
-					renderedMap[MAP_SIZE / 2 + i][MAP_SIZE / 2 + 1 + j] = "IT";
-					renderedMap[MAP_SIZE / 2 - i][MAP_SIZE / 2 + j] = "EX";
-					renderedMap[MAP_SIZE / 2 - i][MAP_SIZE / 2 + 1 + j] = "IT";
-				}
-
-			}
+			in_line = (playerX + i) * FIXEL_SIZE;
+			break;
 		}
 	}
-
+	for (int i = 0; i < MAP_SIZE - (in_line * 2); i++)
+	{
+		for (int j = in_line; j < MAP_SIZE - in_line - 1; j +=2)
+		{
+			renderedMap[in_line + i][j] = "EX";
+			renderedMap[in_line + i][j + 1] = "IT";
+		}
+	}
 }
 
 int MapViewer::GetNearestPlayerForward(vector<vector<int>>& map)
