@@ -2,23 +2,29 @@
 #include "Enum.h"
 #include "SceneManager.h"
 
-// state.Pathway
 void GameManager::DisplayKeyGuide() const
 {
-
+	static int widthSize = WINDOW_SIZE - 1;
+	string stage = " 현재 스테이지 : ";
+	stage += SceneManager::GetInstance().GetCurrentSceneIndex() + '0';
 	for (int i = 0; i < WINDOW_SIZE; i++)
 		cout << PRINT_WALL;
 	cout << endl;
-	string stage = " 현재 스테이지 : ";
-	stage += SceneManager::GetInstance().GetCurrentSceneIndex() + '0';
-	cout << PRINT_WALL << setw(WINDOW_SIZE * 2 - 4) << left << stage << PRINT_WALL << "\n";
-	cout << PRINT_WALL << setw(WINDOW_SIZE * 2 - 4) << left << " 키보드 입력" << PRINT_WALL << "\n";
-	cout << PRINT_WALL << setw(WINDOW_SIZE * 2 - 4) << left << " w || ↑ : 위로이동" << PRINT_WALL << "\n";
-	cout << PRINT_WALL << setw(WINDOW_SIZE * 2 - 4) << left << " a || ← : 좌로이동" << PRINT_WALL << "\n";
-	cout << PRINT_WALL << setw(WINDOW_SIZE * 2 - 4) << left << " s || → : 우로이동" << PRINT_WALL << "\n";
-	cout << PRINT_WALL << setw(WINDOW_SIZE * 2 - 4) << left << " d || ↓ : 아래로이동" << PRINT_WALL<< "\n";
+	cout << PRINT_WALL << setw(widthSize * 2) << right << PRINT_WALL << "\n";
+
+	cout << PRINT_WALL << setw(widthSize) << stage << setw(widthSize) << PRINT_WALL << "\n";
+	cout << PRINT_WALL << setw(widthSize * 2) << right << PRINT_WALL << "\n";
+	cout << PRINT_WALL << setw(widthSize) << " 키보드 입력" << setw(widthSize) << PRINT_WALL << "\n";
+	cout << PRINT_WALL << setw(widthSize * 2) << right << PRINT_WALL << "\n";
+	cout << PRINT_WALL << setw(widthSize) << " w || ↑ : 위로이동" << setw(widthSize) << PRINT_WALL << "\n";
+	cout << PRINT_WALL << setw(widthSize) << " a || ← : 좌로이동" << setw(widthSize) << PRINT_WALL << "\n";
+	cout << PRINT_WALL << setw(widthSize) << " s || → : 우로이동" << setw(widthSize) << PRINT_WALL << "\n";
+	cout << PRINT_WALL << setw(widthSize) << " d || ↓ : 아래로이동" << setw(widthSize) << PRINT_WALL<< "\n";
+	
+	cout << PRINT_WALL << setw(widthSize * 2) << right << PRINT_WALL << "\n";
 	for (int i = 0; i < WINDOW_SIZE; i++)
 		cout << PRINT_WALL;
+	cout << endl;
 	cout << endl;
 }
 
@@ -30,22 +36,6 @@ void GameManager::DisplayWindow() const
 	DisplayKeyGuide();
 	SceneManager::GetInstance().GetCurrentScene()->map->Display();
 }
-
-// state.Pathway
-KEY_INPUT InputPathway()
-{
-	char c = _getch();
-	if (c == 72 || c == 'w')
-		return KEY_INPUT::UP;
-	else if (c == 75 || c == 'a')
-		return KEY_INPUT::LEFT;
-	else if (c == 80 || c == 's')
-		return KEY_INPUT::DOWN;
-	else if (c == 77 || c == 'd')
-		return KEY_INPUT::RIGHT;
-	return KEY_INPUT::NONE;
-}
-
 
 
 void GameManager::GameStart()
@@ -59,7 +49,7 @@ void GameManager::GameStart()
 	while (true)
 	{
 		if (GameOver())
-			GameExit();
+			Win();
 		Sleep(30);
 		KEY_INPUT dir = InputManager::GetInstance().GetInput();
 		if (dir == KEY_INPUT::GAME_OVER)
@@ -72,8 +62,45 @@ void GameManager::GameStart()
 	}
 }
 
-void GameManager::GameExit()
+void GameManager::Win() const
 {
+	system("cls");
+	cout << "축하합니다. 게임을 클리어하셨습니다.\n";
+	cout << "축하합니다. 게임을 클리어하셨습니다.\n";
+	cout << "축하합니다. 게임을 클리어하셨습니다.\n";
+	cout << "축하합니다. 게임을 클리어하셨습니다.\n";
+	cout << "축하합니다. 게임을 클리어하셨습니다.\n";
+	cout << "축하합니다. 게임을 클리어하셨습니다.\n";
+	cout << "축하합니다. 게임을 클리어하셨습니다.\n";
+	cout << "축하합니다. 게임을 클리어하셨습니다.\n";
+	cout << "축하합니다. 게임을 클리어하셨습니다.\n";
+	cout << "축하합니다. 게임을 클리어하셨습니다.\n";
+	cout << "축하합니다. 게임을 클리어하셨습니다.\n";
+	cout << "축하합니다. 게임을 클리어하셨습니다.\n";
+	cout << "축하합니다. 게임을 클리어하셨습니다.\n";
+	cout << "축하합니다. 게임을 클리어하셨습니다.\n";
+	cout << "축하합니다. 게임을 클리어하셨습니다.\n";
+	cout << "축하합니다. 게임을 클리어하셨습니다.\n";
+	cout << "축하합니다. 게임을 클리어하셨습니다.\n";
+	cout << "축하합니다. 게임을 클리어하셨습니다." << endl;
+	exit(0);
+}
+
+void GameManager::GameExit() const
+{
+	system("cls");
+	cout << "게임을 종료합니다~~~~~~~~~~~~~~~~~~~\n";
+	cout << "게임을 종료합니다~~~~~~~~~~~~~~~~~~~\n";
+	cout << "게임을 종료합니다~~~~~~~~~~~~~~~~~~~\n";
+	cout << "게임을 종료합니다~~~~~~~~~~~~~~~~~~~\n";
+	cout << "게임을 종료합니다~~~~~~~~~~~~~~~~~~~\n";
+	cout << "게임을 종료합니다~~~~~~~~~~~~~~~~~~~\n";
+	cout << "게임을 종료합니다~~~~~~~~~~~~~~~~~~~\n";
+	cout << "게임을 종료합니다~~~~~~~~~~~~~~~~~~~\n";
+	cout << "게임을 종료합니다~~~~~~~~~~~~~~~~~~~\n";
+	cout << "게임을 종료합니다~~~~~~~~~~~~~~~~~~~\n";
+	cout << "게임을 종료합니다~~~~~~~~~~~~~~~~~~~\n";
+	cout << "게임을 종료합니다~~~~~~~~~~~~~~~~~~~\n";
 	cout << "게임을 종료합니다~~~~~~~~~~~~~~~~~~~\n";
 	cout << "게임을 종료합니다~~~~~~~~~~~~~~~~~~~\n";
 	cout << "게임을 종료합니다~~~~~~~~~~~~~~~~~~~\n";

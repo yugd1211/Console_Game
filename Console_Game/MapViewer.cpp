@@ -12,8 +12,6 @@ MapViewer::MapViewer(Position pos) : playerPos(pos)
 	InitDisplayMap();
 }
 
-
-
 void MapViewer::Display() const
 {
 	for (auto vec : renderedMap)

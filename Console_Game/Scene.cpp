@@ -31,6 +31,8 @@ void Scene::MovePlayer(KEY_INPUT dir)
 		if (nxtElement == MAP_ELEMENT::VOID)
 		{
 			map->Swap(player->pos, nxt);
+			//swap(p, board[b.x][b.y]);
+
 			player->pos = nxt;
 		}
 		else if (nxtElement == MAP_ELEMENT::EXIT)

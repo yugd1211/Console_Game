@@ -17,13 +17,15 @@ class GameManager : public Singleton<GameManager>
 {
 public:
 	void GameStart();
-	void GameExit();
 	void DisplayKeyGuide() const;
 	bool GameOver() { return isGameOver; }
 	void SetGameOver(bool b) { isGameOver = b; }
 	void DisplayWindow() const;
 
 private:
+	void Win() const;
+	void GameExit() const;
+
 	bool isGameOver = false;
 	int gameCount = 0;
 };

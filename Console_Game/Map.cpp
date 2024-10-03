@@ -44,25 +44,16 @@ MAP_ELEMENT Map::CheckPosition(Position& pos)
 
 void Map::Swap(Position a, Position b)
 {
-	int tmp = board[a.x][a.y];
-	board[a.x][a.y] = board[b.x][b.y];
-	board[b.x][b.y] = tmp;
+	swap(board[a.x][a.y], board[b.x][b.y]);
 }
 
 void Map::UpdatePlayerPosition()
 {
 	for (int i = 0; i < board.size(); i++)
-	{
 		for (int j = 0; j < board.size(); j++)
-		{
 			if (board[i][j] == MAP_ELEMENT::PLAYER)
-			{
-				scene->player->pos.x = i;
-				scene->player->pos.y = j;
-				return;
-			}
-		}
-	}
+				scene->player->pos = Position(i, j);
+
 }
 
 void Map::ChangeLeftDirection()
