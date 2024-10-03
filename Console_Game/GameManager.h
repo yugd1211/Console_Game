@@ -11,8 +11,6 @@
 #include <windows.h>
 #define _CRTDBG_MAP_ALLOC
 
-
-
 class GameManager : public Singleton<GameManager>
 {
 public:

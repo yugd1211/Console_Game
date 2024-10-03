@@ -16,8 +16,6 @@
 const int dx[4] = { -1, 1, 0, 0 };
 const int dy[4] = { 0, 0, -1, 1 };
 
-
-
 enum KEY_INPUT
 {
     UP,
@@ -32,7 +30,7 @@ enum KEY_INPUT
 
 enum MAP_ELEMENT
 {
-	VOID,
+	EMPTY,
 	PLAYER,
 	EXIT,
 	WALL,

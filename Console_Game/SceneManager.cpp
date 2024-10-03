@@ -15,6 +15,13 @@ SceneManager::~SceneManager()
 	scenes.clear();
 }
 
+void SceneManager::Init()
+{
+	for (int i = 1; i <= MAX_GAME_COUNT; i++)
+		SceneManager::GetInstance().AddScene(i, SceneManager::GetInstance().MakeScene());
+	SceneManager::GetInstance().SetCurrentScene(1);
+}
+
 void SceneManager::AddScene(const int& index, Scene* scene)
 {
 	scenes[index] = scene;

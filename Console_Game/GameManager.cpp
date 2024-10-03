@@ -35,22 +35,18 @@ void GameManager::DisplayWindow() const
 	SceneManager::GetInstance().GetCurrentScene()->viewer->Display();
 	DisplayKeyGuide();
 	SceneManager::GetInstance().GetCurrentScene()->map->Display();
+	//BufferManager::GetInstance().Render();
 }
 
 
 void GameManager::GameStart()
 {
-	// ¾À »ý¼º
-	for (int i = 1; i <= MAX_GAME_COUNT; i++)
-		SceneManager::GetInstance().AddScene(i, SceneManager::GetInstance().MakeScene());
-	SceneManager::GetInstance().SetCurrentScene(1);
-
 	DisplayWindow();
 	while (true)
 	{
 		if (GameOver())
 			Win();
-		Sleep(30);
+		//Sleep(30);
 		KEY_INPUT dir = InputManager::GetInstance().GetInput();
 		if (dir == KEY_INPUT::GAME_OVER)
 			GameExit();

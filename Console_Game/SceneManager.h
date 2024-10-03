@@ -6,6 +6,7 @@
 #include "Enum.h"
 #include "Singleton.h"
 #include "InputManager.h"
+#include "BufferManager.h"
 #include <queue>
 
 class Player;
@@ -18,6 +19,7 @@ public:
 	SceneManager() : currentScene(nullptr), currentSceneIndex(-1), isGameEnd(false) {}
 	~SceneManager();
 
+	void Init();
 	void AddScene(const int& index, Scene* scene);
 	void RemoveScene(const int& index);
 	bool SetCurrentScene(const int& index);

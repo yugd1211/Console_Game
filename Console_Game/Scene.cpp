@@ -1,7 +1,7 @@
 #include "Scene.h"
 #include "Player.h"
 #include "SceneManager.h"
-
+#include "Map.h"
 
 Scene::Scene(SceneManager* sceneManager) :
 	sceneManager(sceneManager), player(nullptr), map(nullptr), viewer(nullptr) 
@@ -28,7 +28,7 @@ void Scene::MovePlayer(KEY_INPUT dir)
 		nxt.x = player->pos.x + dx[dir];
 		nxt.y = player->pos.y + dy[dir];
 		MAP_ELEMENT nxtElement = map->CheckPosition(nxt);
-		if (nxtElement == MAP_ELEMENT::VOID)
+		if (nxtElement == MAP_ELEMENT::EMPTY)
 		{
 			map->Swap(player->pos, nxt);
 			//swap(p, board[b.x][b.y]);

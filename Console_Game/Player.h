@@ -5,7 +5,6 @@
 #include "Scene.h"
 #include "Map.h"
 #include "Enum.h"
-using namespace std;
 
 class Player
 {

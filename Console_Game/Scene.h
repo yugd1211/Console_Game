@@ -5,9 +5,7 @@ class Player;
 class Map;
 class SceneManager;
 #include "Position.h"
-#include "Enum.h"
 #include "MapViewer.h"
-using namespace std;
 
 
 class Scene

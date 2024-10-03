@@ -1,5 +1,6 @@
 #include "Map.h"
 
+using namespace std;
 Map::Map(Scene* scene, const vector<vector<int>>& board) : scene(scene), board(board), size(board.size())
 {
 }
@@ -39,7 +40,7 @@ MAP_ELEMENT Map::CheckPosition(Position& pos)
 		return MAP_ELEMENT::WALL;
 	else if (board[pos.x][pos.y] == MAP_ELEMENT::EXIT)
 		return MAP_ELEMENT::EXIT;
-	return MAP_ELEMENT::VOID;
+	return MAP_ELEMENT::EMPTY;
 }
 
 void Map::Swap(Position a, Position b)

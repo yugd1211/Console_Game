@@ -1,5 +1,7 @@
 #include "MapViewer.h"
 
+using namespace std;
+
 MapViewer::MapViewer(int x, int y) : playerPos(x, y)
 {
 	renderedMap = vector<vector<string>>(WINDOW_SIZE);
