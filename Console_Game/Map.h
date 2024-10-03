@@ -21,9 +21,12 @@ public:
 	void ChangeRightDirection();
 
 	std::vector<std::vector<int>> board;
-private:
+private:	
+	bool ValidateMapPath(std::vector<std::vector<int>>& board, Position st);
+	void CreateRandomMap(std::vector<std::vector<int>>& board, int size, Position playerPos, Position exitPos);
+	void UpdatePlayerPosition();
+
 	int size;
 	Scene* scene;
-	void UpdatePlayerPosition();
 };
 
