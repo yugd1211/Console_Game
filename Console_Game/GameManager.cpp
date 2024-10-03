@@ -10,9 +10,8 @@ void GameManager::DisplayKeyGuide() const
 	std::ostringstream oss;
 
 	for (int i = 0; i < WINDOW_SIZE; i++)
-		BufferManager::GetInstance().AddToBuffer(PRINT_WALL);
-	BufferManager::GetInstance().AddToBuffer("\n");
-
+		oss << PRINT_WALL;
+	oss << "\n";
 
 	oss << PRINT_WALL << setw(widthSize * 2) << right << PRINT_WALL << "\n";
 

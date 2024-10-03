@@ -7,7 +7,6 @@
 #include "Singleton.h"
 #include "InputManager.h"
 #include "BufferManager.h"
-#include <queue>
 
 class Player;
 class GamaManager;
