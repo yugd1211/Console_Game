@@ -58,13 +58,13 @@ void Map::UpdatePlayerPosition()
 
 void Map::ChangeLeftDirection()
 {
-	for (int i = 0; i < board.size() - 1; i++)
+	for (int i = 0; i < board.size(); i++)
 		for (int j = 0; j < i; j++)
 			swap(board[i][j], board[j][i]);
 
 	for (int i = 0; i < board.size(); i++)
 		for (int j = 0; j < board.size() / 2; j++)
-			swap(board[i][j], board[i][board.size() - 1 - j]);
+			swap(board[i][j], board[i][board.size() - j - 1]);
 	UpdatePlayerPosition();
 }
 

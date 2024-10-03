@@ -20,7 +20,7 @@ void Scene::MovePlayer(KEY_INPUT dir)
 {
 	if (dir == KEY_INPUT::TURN_LEFT)
 		map->ChangeLeftDirection();
-	if (dir == KEY_INPUT::TURN_RIGHT)
+	else if (dir == KEY_INPUT::TURN_RIGHT)
 		map->ChangeRightDirection();
 	else
 	{
