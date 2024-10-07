@@ -16,7 +16,9 @@
 
 - Visual Studio 2022
 
-[Maze Game 기능 명세서](https://www.notion.so/Maze-Game-10dd36ad924e8056a7dfd064e10b1536?pvs=21)
+### 플레이 영상
+
+https://youtu.be/2evicefxdeg
 
 # 프로젝트 소개
 
